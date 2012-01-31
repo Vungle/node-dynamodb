@@ -1,0 +1,1 @@
+{"op":"PutItem","data":{"TableName":"Installs","Item":{"isu":{"S":"1327986733784.7498"},"data":{"S":"Bryant is cool"}}}}
