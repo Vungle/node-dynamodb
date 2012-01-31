@@ -13,6 +13,14 @@
                       "darwin",
                       "freebsd" ],
   "dependencies": { "fwk": "0.1.x" },
+  "devDependencies": {
+    "mocha": "0.10.1",
+    "should": "0.5.1",
+    "step": "0.0.x"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
   "main" : "./lib/ddb",
   "engines" : { "node" : ">=0.6.0" }
 }
