@@ -7,11 +7,13 @@ var dynaTableName = 'Installs';
 var fileQ = require('../lib/fileQueue');
 var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
                                  secretAccessKey: process.env.AWS_SECRET,
-                                 queue: fileQ.queue({ filePath: './dynaQueue' }) });
+                                 queue: fileQ.queue({ filePath: './test/dynaQueue' }) });
 
+console.log('checking table ...');
 ddb.describeTable(dynaTableName, function(err, res) {
   console.log(res);
 });
+console.log('finished checking table ...');
 
 var options = null;
 var queuedCount = 0;
@@ -25,6 +27,7 @@ var add = function(i, ee) {
     order: false
   };
   item.order = i;
+  console.log('adding: %s', item.isu);
   ddb.putItem(dynaTableName, item, options, function(err, res, cap) {
     if(err) {
       if (err.queued) {
@@ -86,8 +89,8 @@ describe('fileQueue', function() {
     });
 
     it('gets all 100 puts', function(done) {
-    	for(var item in items) {
-        var countEventEmitter = new events.EventEmitter();
+      this.timeout(120000);
+      var countEventEmitter = new events.EventEmitter();
         var dones = 0;
         countEventEmitter.on('done', function(item) {
           if (dones == ITEMS) {
@@ -95,7 +98,8 @@ describe('fileQueue', function() {
             done();
           }
         });
-        getI(item.isu, ee);
+    	for(var item in items) {
+        get(item.isu, countEventEmitter);
       }
     });
   });
