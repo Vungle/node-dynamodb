@@ -10,25 +10,26 @@ ddb.describeTable('Installs', function(err, res) {
 var options = null;
 var items = [];
 var ITEMS_TO_ADD = 100;
+var queuedCount = 0;
+var successCount = 0;
 
-var count = 0;
-var add = function() {
+var add = function(i) {
   var item = { 
     isu: (new Date().getTime() + Math.random()).toString(),
-    data: 'Bryant is cool'
+    data: 'Bryant is cool',
+    order: false
   };
+  item.order = i;
   ddb.putItem('Installs', item, options, function(err, res, cap) {
     if(err) {
       if (err.queued) {
-        console.log('putItem request queued');
-      }
-      else {
-        console.log('errored out after %d - consumedCapacity: %d', count, ddb.consumedCapacity);
+        console.log('%d PutItem queued: %s', item.order, JSON.stringify(item));
+        queuedCount++;
       }
     }
     else {
-      count++;
-      console.log('%d PutItem success: %s', count, JSON.stringify(item));
+      console.log('%d PutItem success: %s', item.order, JSON.stringify(item));
+      successCount++;
     }
 
     items[item.isu] = item;
@@ -38,11 +39,13 @@ var add = function() {
 var assertKeys = function(items, done) {
   for(var i in items) {
     var item = items[i];
-    if (!item) {
+    if (!item || !item.isu) {
       continue;
     }
-    console.log('getting: ' + item.isu);
+    
     var isu = item.isu;
+    console.log('getting: ' + isu);
+    
     ddb.getItem('Installs', isu, null, {}, function(err, res, cap) {
       if (err) {
         if (err.queued) {
@@ -53,7 +56,7 @@ var assertKeys = function(items, done) {
         }
       }
       else {
-        console.log('GetItem success: isu: %s res:%s', isu, JSON.stringify(res));
+        console.log('GetItem success: isu: %s res:%s', res.isu, JSON.stringify(res));
         item.found = true;
       }
 
@@ -66,7 +69,7 @@ var assertKeys = function(items, done) {
 
 var i = 0;
 for(;i < ITEMS_TO_ADD; i++) {
-  add();
+  add(i);
 }
 
 // var wait = function() {
