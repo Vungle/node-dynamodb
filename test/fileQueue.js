@@ -61,7 +61,7 @@ var get = function(hash, ee) {
       }
     }
     else {
-      console.log('GetItem success: %s', res);
+      console.log('GetItem success: %s', JSON.stringify(res));
     }
   });
 };
@@ -70,7 +70,7 @@ var ITEMS = 100;
 
 // Start test description
 describe('fileQueue', function() {
-  describe('100 put operations', function() {
+  describe('100 operations', function() {
     it('processes all 100 put operations', function(done) {
 	  this.timeout(120000);
       var i = 0;
@@ -78,6 +78,7 @@ describe('fileQueue', function() {
       var dones = 0;
       countEventEmitter.on('done', function(item) {
       	dones++;
+        console.log('put done: %d', dones);
       	if (dones == ITEMS) {
       		console.log('finished');
       		done();
@@ -93,12 +94,18 @@ describe('fileQueue', function() {
       var countEventEmitter = new events.EventEmitter();
         var dones = 0;
         countEventEmitter.on('done', function(item) {
+          console.log('get done: %d', dones)
+          dones++;
           if (dones == ITEMS) {
             console.log('finished getting 100 items');
             done();
           }
         });
-    	for(var item in items) {
+    	for(var i in items) {
+        var item = items[i];
+        if (!item || !item.isu) {
+          continue;
+        }
         get(item.isu, countEventEmitter);
       }
     });
