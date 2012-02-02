@@ -51,8 +51,8 @@
  *                                      by the operation
  */
 
-var ddb = require('../lib/ddb.js').ddb({ accessKeyId:     'ACCESS_KEY_ID',
-                                         secretAccessKey: 'SECRET_ACCESS_KEY' });
+var ddb = require('../lib/ddb').createClient({ accessKeyId: process.env.AWS_KEY,
+                                 secretAccessKey: process.env.AWS_SECRET });
 
 
 // Simple
