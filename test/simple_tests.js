@@ -2,10 +2,10 @@ var should = require('should');
 var step = require('step');
 var events = require('events');
 
-var ddb = require('../lib/ddb').createClient({ accessKeyId: process.env.AWS_KEY,
+var ddb = require('../lib/ddb').ddb({ accessKeyId: process.env.AWS_KEY,
                                  secretAccessKey: process.env.AWS_SECRET });
 
-var dynaTableName = 'Installs'
+var dynaTableName = 'DYNAMODB_TEST_TABLE1';
 var table = false;
 
 describe('describes table', function() {
@@ -40,9 +40,10 @@ describe('PutItem, GetItem, then DeleteItem', function() {
     should.exist(table);
     name = table.KeySchema.HashKeyElement.AttributeName;
     var item = {};
-    item[name] = new Date().getTime() + "";
-    key = item[name];
-    item["data"] = "This is  nice.";
+    item.sha = new Date().getTime() + "";
+    key = item.sha;
+    item.data = "This is  nice.";
+    console.log(item);
     ddb.putItem(dynaTableName, item, {}, function(err, res, cap) {
       should.not.exist(err);
       should.not.exist(res);
@@ -65,7 +66,7 @@ describe('PutItem, GetItem, then DeleteItem', function() {
 
   it('then deletes the item', function(done) {
     should.exist(key);
-    ddb.deleteItem(dynaTableName, key, null, null, function(err, attributes, cap) {
+    ddb.deleteItem(dynaTableName, key, null, {}, function(err, attributes, cap) {
       should.not.exist(err);
       should.not.exist(attributes);
       done();
