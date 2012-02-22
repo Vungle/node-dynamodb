@@ -69,7 +69,7 @@ var get = function(hash, ee) {
   });
 };
 
-var ITEMS = 20;
+var ITEMS = 2;
 
 /**
  * This test exercises the PutItem's fileQueue fire and forget logic.
@@ -78,7 +78,7 @@ var ITEMS = 20;
 describe('fileQueue', function() {
   describe(ITEMS + ' operations', function() {
     it('processes all ' + ITEMS + ' put operations', function(done) {
-  	  this.timeout(ITEMS * 500);
+  	  this.timeout(ITEMS * 700);
       var i = 0;
       var countEventEmitter = new events.EventEmitter();
       var dones = 0;
