@@ -1,27 +1,34 @@
 var should = require('should');
 var step = require('step');
 var events = require('events');
+var crypto = require('crypto');
 
-var dynaTableName = 'DYNAMODB_TEST_TABLE1';
+var dynaTableName = 'DYNAMO_TEST_TABLE2';
 
 var fileQ = require('../lib/fileQueue');
 var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
-                                 secretAccessKey: process.env.AWS_SECRET });
-ddb.queue = fileQ.queue({ filePath: './test/dynaQueue' });
-ddb.queue.init(ddb); 
+                                 secretAccessKey: process.env.AWS_SECRET,
+                                 queue: fileQ.queue({ filePath: './test/dynaQueue' }) });
 
 var options = {};
 var queuedCount = 0;
 var successCount = 0;
 var items = [];
 var itemsDir = {};
-var add = function(i, ee) {
+
+var generateNewItem = function(i) {
   var item = { 
-    sha: (new Date().getTime() + Math.random()).toString(),
     data: 'Bryant is cool',
-    order: false
+    order: i
   };
-  item.order = i;
+
+  var rand = Math.random() * 10000000;
+  item.sha = crypto.createHash('md5').update(rand + item.data + item.order).digest('hex');
+  return item;
+}
+
+var add = function(i, ee) {
+  var item = generateNewItem(i);
   console.log('adding: %s', item.sha);
   ddb.putItem(dynaTableName, item, options, function(err, res, cap) {
     if(err) {
@@ -64,11 +71,14 @@ var get = function(hash, ee) {
 
 var ITEMS = 2;
 
-// Start test description
-describe('queue', function() {
-  describe('100 operations', function() {
-    it('processes all 100 put operations', function(done) {
-	  // this.timeout(120000);
+/**
+ * This test exercises the PutItem's fileQueue fire and forget logic.
+ * ITEMS should be set at least 2X your provisioned read and write throughput
+ */
+describe('fileQueue', function() {
+  describe(ITEMS + ' operations', function() {
+    it('processes all ' + ITEMS + ' put operations', function(done) {
+  	  this.timeout(10000);
       var i = 0;
       var countEventEmitter = new events.EventEmitter();
       var dones = 0;
@@ -76,8 +86,9 @@ describe('queue', function() {
       	dones++;
         console.log('put done: %d', dones);
       	if (dones == ITEMS) {
-      		console.log('finished');
-      		done();
+      		setTimeout(function() {
+            return done();
+          }, 5000);
       	}
       });
       for (; i < ITEMS; i++) {
@@ -85,15 +96,15 @@ describe('queue', function() {
       }
     });
 
-    it('gets all 100 puts', function(done) {
-      this.timeout(120000);
+    it('gets all ' + ITEMS + ' puts', function(done) {
+      this.timeout(4000);
       var countEventEmitter = new events.EventEmitter();
         var dones = 0;
         countEventEmitter.on('done', function(item) {
           console.log('get done: %d', dones)
           dones++;
           if (dones == ITEMS) {
-            console.log('finished getting 100 items');
+            console.log('finished getting %d items', ITEMS);
             done();
           }
         });
