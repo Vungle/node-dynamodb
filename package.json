@@ -12,7 +12,9 @@
   "os" :            [ "linux",
                       "darwin",
                       "freebsd" ],
-  "dependencies": {  },
+  "dependencies": {
+     "fwk": "*"
+  },
   "devDependencies": {
     "mocha": "0.10.1",
     "should": "0.5.1",

@@ -69,7 +69,7 @@ var get = function(hash, ee) {
   });
 };
 
-var ITEMS = 2;
+var ITEMS = 20;
 
 /**
  * This test exercises the PutItem's fileQueue fire and forget logic.
@@ -78,7 +78,7 @@ var ITEMS = 2;
 describe('fileQueue', function() {
   describe(ITEMS + ' operations', function() {
     it('processes all ' + ITEMS + ' put operations', function(done) {
-  	  this.timeout(10000);
+  	  this.timeout(ITEMS * 500);
       var i = 0;
       var countEventEmitter = new events.EventEmitter();
       var dones = 0;
@@ -88,7 +88,7 @@ describe('fileQueue', function() {
       	if (dones == ITEMS) {
       		setTimeout(function() {
             return done();
-          }, 5000);
+          }, ITEMS * 200);
       	}
       });
       for (; i < ITEMS; i++) {
@@ -118,5 +118,3 @@ describe('fileQueue', function() {
     });
   });
 });
-
-
