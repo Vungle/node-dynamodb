@@ -23,6 +23,6 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
-  "main" : "./lib/ddb",
+  "main" : "./index",
   "engines" : { "node" : ">=0.6.0" }
 }
