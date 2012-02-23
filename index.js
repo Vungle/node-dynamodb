@@ -4,5 +4,7 @@
  *
  */
 
-module.exports.ddb = require('./lib/ddb');
-module.exports.queue= require('./lib/fileQueue');
+module.exports = {
+  ddb: require('./lib/ddb'),
+  queue: require('./lib/fileQueue')
+};
