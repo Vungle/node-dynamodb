@@ -18,7 +18,8 @@
   "devDependencies": {
     "mocha": "0.10.1",
     "should": "0.5.1",
-    "step": "0.0.x"
+    "step": "0.0.x",
+    "commander": "*"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha"
