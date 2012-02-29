@@ -91,6 +91,23 @@ describe('PutItem, GetItem, then DeleteItem', function() {
       done();
     });
   });
+
+  describe('scans table', function() {
+    it('returns 4 items', function(done) {
+      this.timeout(5000);
+      var options = {
+        limit: 4
+      };
+      ddb.scan(dynaTableName, options, function(err, res) {
+        should.not.exist(err);
+        should.exist(res);
+        res.items.length.should.equal(4);
+        res.scannedCount.should.equal(4);
+        // console.log(res);
+        done();
+      });
+    });
+  });
 });
 
 var name = 'testTable';
@@ -106,7 +123,7 @@ describe('creates table', function() {
     ddb.createTable(name, keySchema, provisionedThroughput, function(err, res) {
       should.not.exist(err);
       should.exist(res);
-      console.log(res);
+      // console.log(res);
       res.TableName.should.equal(name);
       done();
     });
@@ -120,22 +137,5 @@ describe('deletes table', function() {
       err.type.should.equal('com.amazonaws.dynamodb.v20111205#ResourceNotFoundException');
       done();
     })
-  });
-});
-
-describe('scans table', function() {
-  it('returns 4 items', function(done) {
-    this.timeout(5000);
-    var options = {
-      limit: 4
-    };
-    ddb.scan(dynaTableName, options, function(err, res) {
-      should.not.exist(err);
-      should.exist(res);
-      res.items.length.should.equal(4);
-      res.scannedCount.should.equal(4);
-      // console.log(res);
-      done();
-    });
   });
 });
