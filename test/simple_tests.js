@@ -95,7 +95,6 @@ describe('PutItem, GetItem, then DeleteItem', function() {
 
 var name = 'testTable';
 describe('creates table', function() {
-  return;
   it('returns the table specifics', function(done) {
     var keySchema = {
       hash: ['hash', 'S']
