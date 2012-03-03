@@ -110,32 +110,30 @@ describe('PutItem, GetItem, then DeleteItem', function() {
   });
 });
 
-var name = 'testTable';
-describe('creates table', function() {
-  it('returns the table specifics', function(done) {
-    var keySchema = {
-      hash: ['hash', 'S']
-    };
-    var provisionedThroughput = {
-      write: 5,
-      read: 5
-    }
-    ddb.createTable(name, keySchema, provisionedThroughput, function(err, res) {
-      should.not.exist(err);
-      should.exist(res);
-      // console.log(res);
-      res.TableName.should.equal(name);
-      done();
-    });
-  });
-});
-
-describe('deletes table', function() {
-  it('removes the table from DynamoDb', function(done) {
-    ddb.deleteTable(name, function(err, tab) {
-      should.exist(err);
-      err.type.should.equal('com.amazonaws.dynamodb.v20111205#ResourceNotFoundException');
-      done();
-    })
-  });
-});
+// var name = 'testTable';
+// describe('table manipulation', function() {
+//   it('removes the table from DynamoDb', function(done) {
+//     ddb.deleteTable(name, function(err, tab) {
+//       should.exist(err);
+//       err.type.should.equal('com.amazonaws.dynamodb.v20111205#ResourceNotFoundException');
+//       done();
+//     });
+//   });  
+  
+//   it('returns the table specifics', function(done) {
+//     var keySchema = {
+//       hash: ['hash', 'S']
+//     };
+//     var provisionedThroughput = {
+//       write: 5,
+//       read: 5
+//     }
+//     ddb.createTable(name, keySchema, provisionedThroughput, function(err, res) {
+//       should.not.exist(err);
+//       should.exist(res);
+//       // console.log(res);
+//       res.TableName.should.equal(name);
+//       done();
+//     });
+//   });
+// });
