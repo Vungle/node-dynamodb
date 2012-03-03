@@ -47,8 +47,9 @@ function scan(table) {
             count: count,
             filter: filter
           };
-          ddb.scan(program.scan, options, function(err, res) {
+          ddb.scan(program.scan, options, function(err, res, cap) {
             console.log('%s', JSON.stringify(res, null, '\t'));
+            console.log('cap used: %s', JSON.stringify(cap, null, '\t'));
             scan();
           });
         });
