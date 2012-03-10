@@ -37,7 +37,8 @@ describe('PutItem, GetItem, then DeleteItem', function() {
   var key;
   var name;
   it('adds an item', function(done) {
-    should.exist(table);
+    should.exist(table, "table");
+    should.exist(table.KeySchema, "table.KeySchema");
     name = table.KeySchema.HashKeyElement.AttributeName;
     var item = {};
     item.sha = new Date().getTime() + "";

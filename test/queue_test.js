@@ -69,7 +69,7 @@ var get = function(hash, ee) {
   });
 };
 
-var ITEMS = 2;
+var ITEMS = 5;
 
 /**
  * This test exercises the PutItem's fileQueue fire and forget logic.
