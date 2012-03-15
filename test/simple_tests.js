@@ -4,7 +4,7 @@ var events = require('events');
 
 var ddb = require('../lib/ddb').ddb({ accessKeyId: process.env.AWS_KEY,
                                  secretAccessKey: process.env.AWS_SECRET,
-                                 sessionLength: 12600});
+                                 sessionLength: 129600});
 
 var dynaTableName = 'DYNAMODB_TEST_TABLE1';
 var table = false;
