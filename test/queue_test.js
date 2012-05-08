@@ -3,13 +3,12 @@ var step = require('step');
 var events = require('events');
 var crypto = require('crypto');
 
-var dynaTableName = 'DYNAMO_TEST_TABLE2';
+var dynaTableName = 'DYNAMO_TEST_TABLE1';
 
 var fileQ = require('../lib/fileQueue');
 var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
                                  secretAccessKey: process.env.AWS_SECRET,
-                                 sessionLength: 129600,
-                                 queue: fileQ.queue({ filePath: './test/dynaQueue' }) });
+                                 sessionLength: 129600 });
 
 var options = {};
 var queuedCount = 0;

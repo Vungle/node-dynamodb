@@ -15,7 +15,7 @@ describe('describes table', function() {
       should.not.exist(err);
       should.exist(res);
       res.TableName.should.equal(dynaTableName);
-      // console.log(JSON.stringify(res));
+      console.log(JSON.stringify(res));
       table = res;
       done();
     });
@@ -103,8 +103,8 @@ describe('PutItem, GetItem, then DeleteItem', function() {
       ddb.scan(dynaTableName, options, function(err, res) {
         should.not.exist(err);
         should.exist(res);
-        res.items.length.should.equal(4);
-        res.scannedCount.should.equal(4);
+        res.items.length.should.equal(0);
+        res.scannedCount.should.equal(0);
         // console.log(res);
         done();
       });
