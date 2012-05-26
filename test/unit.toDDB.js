@@ -46,5 +46,7 @@ console.log('objToDDB          : ok');
 assert.deepEqual({ SS : ["foo"]}, scToDDB(["foo"]));
 assert.deepEqual({ SS : ["foo", "bar"]}, scToDDB(["foo", "bar"]));
 
+assert.deepEqual({ S: 1/0 }, scToDDB(1/0));
+
 console.log('scToDDB           : ok');
 
