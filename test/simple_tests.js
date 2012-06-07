@@ -65,17 +65,6 @@ describe('PutItem, GetItem, then DeleteItem', function() {
     });
   });
 
-  it('then retrieves an item from DynamoDb', function(done) {
-    should.exist(key);
-    ddb.getItem(dynaTableName, key, null, false, function(err, item) {
-      should.not.exist(err);
-      should.exist(item);
-      item.data.should.equal("This is  nice.");
-      item[name].should.equal(key);
-      done();
-    });
-  });
-
   it('then deletes the item', function(done) {
     should.exist(key);
     ddb.deleteItem(dynaTableName, key, null, {}, function(err, attributes, cap) {
@@ -103,8 +92,8 @@ describe('PutItem, GetItem, then DeleteItem', function() {
       ddb.scan(dynaTableName, options, function(err, res) {
         should.not.exist(err);
         should.exist(res);
-        res.items.length.should.equal(0);
-        res.scannedCount.should.equal(0);
+        res.items.length.should.equal(4);
+        res.scannedCount.should.equal(4); // change this to however many items u had in there to begin with
         // console.log(res);
         done();
       });

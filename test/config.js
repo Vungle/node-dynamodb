@@ -22,9 +22,9 @@
 var fwk = require('fwk');
 var config = fwk.baseConfig(); 
 
-config['DYNAMODB_ACCESSKEYID']     = 'REPLACE_IN_ENV_OR_ARGS';
-config['DYNAMODB_SECRETACCESSKEY'] = 'REPLACE_IN_ENV_OR_ARGS';
-config['DYNAMODB_TEST_TABLE1']     = 'REPLACE_IN_ENV_OR_ARGS';
-config['DYNAMODB_TEST_TABLE2']     = 'REPLACE_IN_ENV_OR_ARGS';
+config['DYNAMODB_ACCESSKEYID']     = process.env.AWS_KEY;
+config['DYNAMODB_SECRETACCESSKEY'] = process.env.AWS_SECRET;
+config['DYNAMODB_TEST_TABLE1']     = 'DYNAMODB_TEST_TABLE1';
+config['DYNAMODB_TEST_TABLE2']     = 'DYNAMODB_TEST_TABLE2';
 
 exports.config = config;

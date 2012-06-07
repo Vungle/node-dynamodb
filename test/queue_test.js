@@ -3,7 +3,7 @@ var step = require('step');
 var events = require('events');
 var crypto = require('crypto');
 
-var dynaTableName = 'DYNAMO_TEST_TABLE1';
+var dynaTableName = 'DYNAMODB_TEST_TABLE1';
 
 var fileQ = require('../lib/fileQueue');
 var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
@@ -77,7 +77,7 @@ var ITEMS = 5;
  */
 describe('fileQueue', function() {
   describe(ITEMS + ' operations', function() {
-    it('processes all ' + ITEMS + ' put operations', function(done) {
+    it('puts into DDB', function(done) {
   	  this.timeout(ITEMS * 700);
       var i = 0;
       var countEventEmitter = new events.EventEmitter();
@@ -96,7 +96,7 @@ describe('fileQueue', function() {
       }
     });
 
-    it('gets all ' + ITEMS + ' puts', function(done) {
+    it('gets from DDB', function(done) {
       this.timeout(4000);
       var countEventEmitter = new events.EventEmitter();
         var dones = 0;
