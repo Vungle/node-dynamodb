@@ -6,9 +6,17 @@ var crypto = require('crypto');
 var dynaTableName = 'DYNAMODB_TEST_TABLE1';
 
 var fileQ = require('../lib/fileQueue');
+
+var ddbEvent = new events.EventEmitter();
+
 var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
                                  secretAccessKey: process.env.AWS_SECRET,
-                                 sessionLength: 129600 });
+                                 sessionLength: 129600,
+                                 eventEmitter: ddbEvent });
+
+ddbEvent.on('throughputException', function(err) {
+   console.log('ddbEVent: %s', JSON.stringify(err));
+}); 
 
 var options = {};
 var queuedCount = 0;
