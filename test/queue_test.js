@@ -15,10 +15,10 @@ var ddb = require('../lib/ddb').ddb({ accessKeyId:     process.env.AWS_KEY,
                                  eventEmitter: ddbEvent });
 
 ddbEvent.on('retry', function(count, err) {
-   console.log('retry: %d %s', count, JSON.stringify(err));
+   console.log('retry: %d', count);
 }); 
 ddbEvent.on('ProvisionedThroughputExceededException', function(err) {
-   console.log('ProvisionedThroughputExceededException: %s', JSON.stringify(err));
+   console.log('ProvisionedThroughputExceededException: %s', JSON.stringify(err.reqData['TableName']));
 }); 
 
 var options = {};
@@ -80,7 +80,7 @@ var get = function(hash, ee) {
   });
 };
 
-var ITEMS = 5;
+var ITEMS = 15;
 
 /**
  * This test exercises the PutItem's fileQueue fire and forget logic.
