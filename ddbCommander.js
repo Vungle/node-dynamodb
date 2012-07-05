@@ -6,6 +6,7 @@ program
   .version('0.0.1')
   .option('-l, --list', 'List Tables')
   .option('-s, --scan [table]', 'Scans a table')
+  .option('-g, --get [table]', 'GetItem from a table')
   .option('-c, --create', 'Creates a table')
   .parse(process.argv);
 
@@ -50,10 +51,24 @@ function scan(table) {
           ddb.scan(program.scan, options, function(err, res, cap) {
             console.log('%s', JSON.stringify(res, null, '\t'));
             console.log('cap used: %s', JSON.stringify(cap, null, '\t'));
-            scan();
+            scan(table);
           });
         });
       });
+    });
+  });
+};
+
+function getItem(table) {
+  program.prompt('Enter key: ', function(key) {
+    var start = new Date();
+    ddb.getItem(table, key, null, false, function(err, item) {
+      if (err) {
+        return handleResponse(err, item);
+      }
+      console.dir(item);
+      console.log('--took: %dms', new Date() - start);
+      getItem(table);
     });
   });
 };
@@ -64,4 +79,8 @@ if (program.list) {
 
 if (program.scan) {
   scan(program.scan);
+}
+
+if (program.get) {
+  getItem(program.get);
 }
